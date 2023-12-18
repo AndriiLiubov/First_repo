@@ -48,6 +48,15 @@ def remove_unarchived_file(path):
             except OSError:
                 pass
 
+def remove_therest(path):
+    for item in path.iterdir():
+        if item.is_dir():
+            if item.name not in ('images', 'video', 'documents', 'audio', 'archives', 'others'):
+                for file in item.iterdir():
+                    if file.is_file():
+                        file.unlink()
+
+
 def main(folder_path):
     print(folder_path)
     scan.scan(folder_path)
@@ -77,7 +86,7 @@ def main(folder_path):
     # for file in scan.others:
     #     handle_file(file, folder_path, "others")
 
-    
+    remove_therest(folder_path)
     remove_empty_folders(folder_path)
     remove_unarchived_file(folder_path)
 
